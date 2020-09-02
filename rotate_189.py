@@ -45,7 +45,46 @@ class Solution:
         self.reverse(nums, k, len(nums) - 1)
 
 
-s = Solution()
+class Solution2:
+    """方法二：环状"""
+
+    def rotate(self, nums: List[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        k %= n
+        count = 0
+        for start in range(n):
+            cur = start
+            prev = nums[cur]
+            while True:
+                next_ = (cur + k) % n
+                tmp = nums[next_]
+                nums[next_] = prev
+                prev = tmp
+                cur = next_
+                count += 1
+                if cur == start:
+                    break
+            if count == n:
+                break
+
+
+s = Solution2()
 b = [1, 2, 3, 4, 5, 6, 7]
+'''
+[1, 2, 3, 1, 5, 6, 7] tmp =4
+[1, 2, 3, 1, 5, 6, 4] tmp =7
+[1, 2, 7, 1, 5, 6, 4] tmp =3
+[1, 2, 7, 1, 5, 3, 4] tmp =6
+[1, 6, 7, 1, 5, 3, 4] tmp =2
+[1, 6, 7, 1, 2, 3, 4] tmp =5
+[5, 6, 7, 1, 2, 3, 4] tmp =
+'''
 s.rotate(b, 3)
 print(b)
+
+c = [-1, -100, 3, 99]
+s.rotate(c, 2)
+print(c)
