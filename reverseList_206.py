@@ -20,7 +20,54 @@ class ListNode:
         self.val = x
         self.next = None
 
+    def __repr__(self):
+        return f'ListNode: val={self.val}'
+
 
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
-        ...
+        if not head:
+            return
+
+        before = None
+        node = head
+        while node:
+            tmp = node.next
+            node.next = before
+            before = node
+            node = tmp
+        return before
+
+    def reverseList_recv(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        node = self.reverseList_recv(head.next)
+        head.next.next = head
+        head.next = None
+        return node
+
+    def reverseList_iter(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        prev = None
+        current = head
+        while current:
+            temp_next = current.next
+            current.next = prev
+            prev = current
+            current = temp_next
+
+        return prev
+
+
+if __name__ == '__main__':
+    head = ListNode(1)
+    head.next = ListNode(2)
+    head.next.next = ListNode(3)
+    head.next.next.next = ListNode(4)
+    head.next.next.next.next = ListNode(5)
+    s = Solution()
+    a = s.reverseList_iter(head)
+    while a:
+        print(a.val)
+        a = a.next
