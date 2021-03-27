@@ -77,7 +77,7 @@ class Solution:
         return res
 
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
-        """层序遍历"""
+        """层序遍历 队列"""
         if not root:
             return []
         res = []
@@ -91,6 +91,40 @@ class Solution:
                 dq.append(root.right)
         return res
 
+    def levelOrder2(self, root: TreeNode) -> List[List[int]]:
+        """102.层序遍历 每层1个子列表 [[1],[2,3],]"""
+        if not root:
+            return []
+        res = []
+        self._levelOrder2(root, res)
+        return res
+
+    def _levelOrder2(self, root: TreeNode, res: List, level: int = 0):
+        if not root:
+            return []
+        if len(res) <= level:
+            res.insert(level, [])
+        res[level].append(root.val)
+        self._levelOrder2(root.left, res, level + 1)
+        self._levelOrder2(root.right, res, level + 1)
+
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        """107.层序遍历 自下往上 [[2,3], [1]]"""
+        if not root:
+            return []
+        res = []
+        self._levelOrderBottom(root, res, 0)
+        return res
+
+    def _levelOrderBottom(self, root: TreeNode, res: List, level: int) -> List[List[int]]:
+        if not root:
+            return []
+        if len(res) <= level:
+            res.insert(0, [])
+        res[len(res) - level - 1].append(root.val)
+        self._levelOrderBottom(root.left, res, level + 1)
+        self._levelOrderBottom(root.right, res, level + 1)
+
 
 if __name__ == '__main__':
     r = TreeNode(1)
@@ -100,4 +134,4 @@ if __name__ == '__main__':
     r.left.right = TreeNode(5)
 
     s = Solution()
-    print(s.levelOrder(r))
+    print(s.levelOrderBottom(r))
