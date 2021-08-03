@@ -30,7 +30,7 @@ class Solution1:
 
 
 class Solution:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
+    def threeSum1(self, nums: List[int]) -> List[List[int]]:
         """"""
         n = len(nums)
         res = []
@@ -49,6 +49,27 @@ class Solution:
                 if j == k:
                     break
                 if nums[j] + nums[k] == target:
+                    res.append([nums[i], nums[j], nums[k]])
+        return res
+
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """参考了官方解法"""
+        if len(nums) < 3:
+            return []
+        res = []
+        n = len(nums)
+        nums.sort()
+        for i in range(0, n):
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            k = n - 1
+            target = -nums[i]
+            for j in range(i + 1, n):
+                if j > i + 1 and nums[j] == nums[j - 1]:
+                    continue
+                while k > j and nums[k] + nums[j] > target:
+                    k -= 1
+                if k != j and nums[k] + nums[j] == target:
                     res.append([nums[i], nums[j], nums[k]])
         return res
 
@@ -87,10 +108,37 @@ class Solution3:
         return ans
 
 
-s = Solution()
+class Solution4:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) < 3:
+            return []
+        nums.sort()
+        i, k = 0, len(nums) - 1
+        res = []
+        for i in range(k - 1):
+            tmp = k
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            for j in range(i + 1, tmp):
+                if j > i + 1 and nums[j] == nums[j - 1]:
+                    continue
+                target = -(nums[i] + nums[j])
+                while nums[tmp] > target and tmp > j:
+                    tmp -= 1
+                if nums[tmp] == target and tmp != j:
+                    res.append([nums[i], nums[j], nums[tmp]])
+        return res
+
+
+s = Solution4()
 # [-4, -1, -1, 0, 1, 2]
 # [-2,-1,0,1,2,3]
-for nums in [[-1, 0, 1, 2, -1, -4],
-             [1, -1, -1, 0],
-             [3, 0, -2, -1, 1, 2], ]:
+for nums in [
+    [1, -1, -1, 0],
+    [-1, 0, 1, 0],
+    [-1, 0, 1, 2, -1, -4],
+    [1, -1, -1, 0],
+    [3, 0, -2, -1, 1, 2],
+    [-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4]
+]:
     print(s.threeSum(nums))
