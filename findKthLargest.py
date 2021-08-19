@@ -36,4 +36,8 @@ class Solution:
         """
         使用最大堆
         """
-
+        from heap import HeapMin
+        h = HeapMin([-i for i in nums])
+        for i in range(k):
+            ret = h.pop()
+        return -ret
